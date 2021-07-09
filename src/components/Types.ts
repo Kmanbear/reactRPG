@@ -1,0 +1,1 @@
+export type EntityMap = { [key: string]: string[] };
