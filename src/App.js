@@ -12,16 +12,19 @@ function App() {
   const [entities, setEntities] = useState(
     {
       player: {
-
       },
 
     }
   )
 
+  const switchStage = (newStage) => {
+    setGameState({currentStage: gameState.currentStage === "textStage" ? "battleStage" : "textStage"})
+  }
+
   return (
     <>
-    <TextStage currentStage = {gameState.currentStage}/>
-    <BattleStage />
+    <TextStage currentStage = {gameState.currentStage} onSwitchStage={switchStage}/>
+    <BattleStage currentStage = {gameState.currentStage} onSwitchStage={switchStage}/>
     </>
   );
 }

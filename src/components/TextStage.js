@@ -1,7 +1,7 @@
 import StoryNode from "./StoryNode"
 import { useState } from 'react'
 
-const TextStage = ({currentStage}) => {
+const TextStage = ({currentStage, onSwitchStage}) => {
 
     const [playerState, setPlayerState] = useState(
         {
@@ -14,17 +14,17 @@ const TextStage = ({currentStage}) => {
             {
                 id: 0,
                 text: 
-                "Wake up in alleyway, man with you, fight or run?",
+                `You arrive in the village of Calcutta with your brother, your sister, and a chance to start anew.
+                The first thing you learn: there are two powerful families in the village of Calcutta.
+                Whittle - an exiled elvish family
+                Portia - a family of fat dwarves
+                There is about to be only one family in Calcutta, the family of {__Xiong__}.
+                `,
                 options: [
                     {
                         id: 0,
-                        text: 'Fight',
+                        text: 'Next',
                         dest: 1,
-                    },
-                    {
-                        id: 1,
-                        text: 'Run',
-                        dest: 2,
                     },
                 ],
             },
@@ -35,19 +35,9 @@ const TextStage = ({currentStage}) => {
                     {
                         id: 0,
                         text: 'You won the fight!',
-                        dest: 3,
+                        dest: 0,
                     }
                 ],
-            },
-            {
-                id: 2,
-                text: 'Run',
-                options: [],
-            },
-            {
-                id: 3,
-                text: 'Your hands tremble in victory',
-                options: [],
             },
         ]
     )
@@ -55,6 +45,7 @@ const TextStage = ({currentStage}) => {
     const changeLocation = (newLocation) => {
         setPlayerState({location: newLocation})
     }
+
     return (
         ((currentStage === "textStage") &&
         <div>
@@ -62,6 +53,7 @@ const TextStage = ({currentStage}) => {
             text = {storyNodes[playerState.location].text} 
             options = {storyNodes[playerState.location].options}
             onClickOption = {changeLocation}/>
+            <button onClick={onSwitchStage}>Switch Stage</button>
         </div>)
     )
 }
