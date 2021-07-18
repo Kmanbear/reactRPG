@@ -3,10 +3,25 @@ import StoryOption from "./StoryOption"
 import StoryField from "./StoryField"
 import { useState, useEffect } from 'react'
 
-const TextStage = ({playerState, currentStage, onSwitchStage, handleOption, handleSubmit, handleChange}) => {
+const TextStage = ({playerState, handleOption, handleSubmit, handleChange}) => {
 
     const [storyNodes, setStoryNodes] = useState(
         [
+            {
+                id: 1,
+                template: "textOption",
+                data: {
+                    text: `Portia, a family of fat dwarves, come to greet you with axes. Let's say hello back.`,
+                    options: [
+                        {
+                            id: 0,
+                            text: 'Hello dwarves!',
+                            destStage: "battleStage",
+                            dest: 0,
+                        }
+                    ],
+                }
+            },
             {
                 id: 0,
                 template: "textField",
@@ -22,68 +37,49 @@ const TextStage = ({playerState, currentStage, onSwitchStage, handleOption, hand
                         {
                             id: 0,
                             text: 'The Family of ',
+                            destStage: "textStage",
                             dest: 1,
                         },
                     ],
                 }
             },
-            {
-                id: 1,
-                template: "textOption",
-                data: {
-                    text: 'Fight',
-                    options: [
-                        {
-                            id: 0,
-                            text: 'You won the fight!',
-                            dest: 0,
-                        },
-                        {
-                            id: 1,
-                            text: 'You lost the fight!',
-                            dest: 0,
-                        }
-                    ],
-                }
-            },
+            
         ]
     )
 
-    
+    const getCurrentStoryNode = () => {
+        return storyNodes.find((node) => node.id == playerState.location);
+    }
 
     const generateUserOption = () => {
-        let currentStoryNode = storyNodes[playerState.location]
+        const currentStoryNode = getCurrentStoryNode();
         switch (currentStoryNode.template) {
             case "textOption": 
                 return currentStoryNode.data.options.map((option) => 
                     <StoryOption 
                     key = {option.id} 
-                    text={option.text} 
-                    onClick = {handleOption}
-                    dest = {option.dest} /> )
+                    option = {option}
+                    onClick = {handleOption} /> )
             case "textField":
                 return currentStoryNode.data.options.map((option) => 
                     <StoryField 
                     key = {option.id} 
-                    text={option.text} 
+                    option={option}
                     onSubmit = {handleSubmit}
-                    dest = {option.dest}
                     onChange={handleChange}
                     value = {playerState.name} /> )
             default:
                 return <div>Error, unhandled story node template</div>
         }
-        
     }
 
     return (
-        ((currentStage === "textStage") &&
+        ((playerState.currentStage === "textStage") &&
         <div>
             <StoryText 
-                text = {storyNodes[playerState.location].data.text} 
+                text = {getCurrentStoryNode().data.text} 
                 />
             {generateUserOption()}
-            <button onClick={onSwitchStage}>Switch Stage</button>
         </div>)
     )
 }

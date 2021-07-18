@@ -1,6 +1,6 @@
-const StoryOption = ({text, onClick, dest}) => {
+const StoryOption = ({option, onClick,}) => {
     return (
-        <button onClick = {()=>onClick(dest)}>{text}</button>
+        <button onClick = {()=>onClick(option.destStage, option.dest)}>{option.text}</button>
     )
 }
 

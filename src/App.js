@@ -3,18 +3,14 @@ import BattleStage from './components/BattleStage';
 import { useState } from 'react';
 
 function App() {
-  const [gameState, setGameState] = useState(
-    {
-      currentStage: "battleStage"
-    }
-  )
 
   const [playerState, setPlayerState] = useState(
     {
+        currentStage: "textStage",
         location: 0,
         name: ""
     }
-)
+ )
 
   const [entities, setEntities] = useState(
     [
@@ -53,17 +49,17 @@ function App() {
     ]
   )
 
-  const switchStage = (newStage) => {
-    setGameState({currentStage: gameState.currentStage === "textStage" ? "battleStage" : "textStage"})
-  }
-
-const handleOption = (newLocation) => {
-    setPlayerState({...playerState, location: newLocation})
+const movePlayerToNewLocation = (newStage, newLocation) => {
+  setPlayerState({...playerState, currentStage: newStage, location: newLocation})
 }
 
-const handleSubmit = dest => evt => {
+const handleOption = (newStage, newLocation) => {
+  movePlayerToNewLocation(newStage, newLocation);
+}
+
+const handleSubmit = (newStage, newLocation) => evt => {
     evt.preventDefault();
-    setPlayerState({...playerState, location: dest})
+    movePlayerToNewLocation(newStage, newLocation);
 }
 
 const handleChange = (evt) => {
@@ -73,17 +69,14 @@ const handleChange = (evt) => {
   return (
     <>
     <TextStage 
-    currentStage = {gameState.currentStage} 
     playerState = {playerState}
-    onSwitchStage={switchStage}
     handleOption={handleOption}
     handleSubmit={handleSubmit}
     handleChange={handleChange}
     />
     <BattleStage 
-    currentStage = {gameState.currentStage} 
-    onSwitchStage={switchStage}
-    entities={entities}
+      playerState={playerState}
+      entities={entities}
     />
     </>
   );

@@ -1,8 +1,8 @@
-const StoryField = ({text, onSubmit, dest, onChange, value}) => {
+const StoryField = ({option, onSubmit, onChange, value}) => {
     return (
-        <form onSubmit={onSubmit(dest)}>
+        <form onSubmit={onSubmit(option.destStage, option.dest)}>
         <label>
-        {text}
+        {option.text}
         <input
           type="text"
           value={value}
